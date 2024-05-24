@@ -12,39 +12,36 @@ interface Goal {
 
 // GoalList 컴포넌트의 props를 정의하는 인터페이스
 interface GoalProps {
-  goals: Goal[],
-  // 목표 삭제 함수, 목표의 id를 인자로 전달
+  goals: Goal[];
   onRemove: (id: number) => void;
-  // 목표 활성 상태 토글 함수, 목표의 id를 인자로 전달
   onToggle: (id: number) => void;
 };
 
 export default function GList({goals, onRemove, onToggle}: GoalProps) {
   return (
     <>
-      {/* goals 배열을 map으로 순회 - 각 목표의 정보를 렌더링 */}
-      {goals.map(goal => (
-        // 각 목표를 정의 - key 속성 (각 목표를 고유하게 식별)
-        <div key={goal.id}> 
-          {/*  
-            목표의 제목과 설명을 표시
-            : 클릭할 경우 '해당 목표'의 활성 상태가 토글
-          */}
-          <span
+      <ol>
+        {goals.map(goal => (
+          <li 
+            key={goal.id}
             style={{
               cursor: 'pointer',
-              color: goal.active ? 'pink' : 'gray',
+              color: goal.active ? 'black' : 'gray',
+              fontWeight: goal.active ? '600' : '0',
               textDecoration: goal.active ? 'none' : 'line-through',
-              fontStyle: goal.active ? 'none' : 'italic' 
+              fontStyle: goal.active ? 'none' : 'italic'
             }}
             onClick={() => onToggle(goal.id)}
           >
             {goal.title} - {goal.explanation}
-          </span>
-          {/* 목표 삭제 버튼 - 클릭 시 onRemove 함수 호출 */}
-          <button onClick={() => onRemove(goal.id)}>삭제</button>
-        </div>
-      ))}
+            <button onClick={() => onRemove(goal.id)}>삭제</button>
+          </li>
+        ))}
+      </ol>
     </>
   )
 }
+
+// 리스트 번호로 주려고 ol로 바꿨지만 나오지 않았다.
+// 완전 처음 부터 ol로 감싸고 로직을 시작해야 한다.
+// >> 그러니 순번대로 숫자가 나왔다.
